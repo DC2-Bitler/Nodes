@@ -1,53 +1,55 @@
-var ServiceDiscovery = require('../node_modules/node-discovery');
-var Discovery = ServiceDiscovery.Discovery;
+var Discovery = require('../node_modules/node-discovery').Discovery;
 
-var d = new ServiceDiscovery({
-	weight: 1 // Make me not master
-});
-d.demote(true);
-d.need('service.bitlermaster');
-
-
-d.on('ready', function() {
-  /**
-   * ServiceDiscovery has discovered all services needed.
-   *
-   * Things to do:
-   *   Start http server listening on configured port.
-   *   Let the load balancers know we're ready for connections.
-   */
-
-  console.log('Connected to master');
+var pinode = new Discovery({
+  weight: 1
 });
 
-d.on('promotion', function() {
-  /**
-   * Launch things this master process should do.
-   *
-   * For example:
-   *  - Monitior your redis servers and handle failover by issuing slaveof
-   *    commands then notify other node instances to use the new master
-   *  - Make sure there are a certain number of nodes in the cluster and
-   *    launch new ones if there are not enough
-   *  - whatever
-   */
-  console.log('I was promoted to a master.');
+pinode.demote(true);
+
+pinode.advertise({
+  type: "door",
+  commands: [
+    "open",
+    "close"
+  ]
+
 });
 
-d.on('demotion', function() {
-  /**
-   * End all master specific functions or whatever you might like.
-   */
-  console.log('I was demoted from being a master.');
+
+function handleCommands(data) {
+  console.log(data);
+}
+
+
+
+pinode.on("promotion", function() {
+  console.log("I was promoted.");
 });
 
-d.on('master', function(obj) {
-  /**
-   * A new master process has been selected
-   *
-   * Things we might want to do:
-   *  - Review what the new master is advertising use its services
-   *  - Kill all connections to the old master
-   */
-  console.log('A new master is in control');
+pinode.on("demotion", function() {
+  console.log("I was demoted.");
+
+  pinode.advertise(null);
+});
+
+pinode.on("added", function(obj) {
+  console.log("Node added; here are all the nodes:");
+  for (var id in pinode.nodes)
+    console.log(pinode.nodes[id].hostName);
+});
+
+pinode.on("removed", function(obj) {
+  console.log("Node removed; here are all the nodes:");
+  for (var id in pinode.nodes)
+    console.log(pinode.nodes[id].hostName);
+});
+
+pinode.on("master", function(obj) {
+  console.log("Connected to master.");
+
+  pinode.join("commands", handleCommands);
+
+
+
+
 });
