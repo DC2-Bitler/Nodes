@@ -4,20 +4,41 @@ var pinode = new Discovery({
   weight: 1
 });
 
+var piname = "FrontDoor";
+var picommands = [ "open", "close" ];
+var masterNode = "NULL";
+
 pinode.demote(true);
 
 pinode.advertise({
-  type: "door",
-  commands: [
-    "open",
-    "close"
-  ]
+  name: piname,
+  commands: picommands
 
 });
 
+pinode.join("commands", handleCommands);
+
 
 function handleCommands(data) {
-  console.log(data);
+  
+  if( data.name == piname) {
+
+    if( data.command == "open" ) {
+      console.log("Opening door.");
+    }
+    else if ( data.command == "close" ) {
+      console.log("Closing door.");
+    }
+    else {
+      console.log("Bad command");
+    }
+
+
+
+
+  }
+
+
 }
 
 
@@ -46,8 +67,8 @@ pinode.on("removed", function(obj) {
 
 pinode.on("master", function(obj) {
   console.log("Connected to master.");
+  masterNode = obj.hostName;
 
-  pinode.join("commands", handleCommands);
 
 
 

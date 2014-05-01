@@ -4,15 +4,21 @@ var master = new Discovery({
   weight: 10
 });
 
-master.join("commands", function(data) {
-    console.log(data);
-});
+master.join("commands", handleCommands);
+
+
+function handleCommands(data) {
+  console.log(data);
+}
 
 master.on("promotion", function() {
   console.log("Bitler master started.");
 
   
+  setInterval(function(){
+    master.send('commands', { name: "FrontDoor", command: "open" } );
 
+  }, 600);
 
 
 
@@ -29,7 +35,7 @@ master.on("added", function(obj) {
   for (var id in master.nodes)
     console.log(master.nodes[id]);
 
-  master.send('commands','potato');
+  master.send('commands','update');
 });
 
 master.on("removed", function(obj) {
