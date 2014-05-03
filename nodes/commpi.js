@@ -1,4 +1,5 @@
 var Discovery = require('../node_modules/node-discovery').Discovery;
+var spawn = require('child_process').spawn;
 
 var message = {
   type: "request", // Request or Response
@@ -12,15 +13,17 @@ var pinode = new Discovery({
   weight: 1
 });
 
-var piname = "FrontDoor";
-var picommands = [ "open", "close" ];
+var piname = "commpi";
+var picommands = [ "voicecommand" ];
 var masterNode = "NULL";
+
 
 pinode.demote(true);
 
 pinode.advertise({
   name: piname,
   commands: picommands
+
 
 });
 
@@ -29,24 +32,55 @@ pinode.join("commands", handleCommands);
 
 function handleCommands(data) {
   
-  if( data.dst == piname && data.type == "request") {
-
-
-
-    if( data.request == "open" ) {
-      console.log("Opening door.");
-    }
-    else if ( data.request == "close" ) {
-      console.log("Closing door.");
-    }
-    else {
-      console.log("Bad command");
-    }
-
+  if( data.dst == piname && data.request == "command") {
 
 
 
   }
+}
+
+
+function handleVoice(voicetext) {
+
+  console.log(voicetext);
+  
+  if( voicetext.length != 0 ) {
+    // Send to master for parser
+    message.type = "request";
+    message.dst = "master";
+    message.src = piname;
+    message.request = "voiceparse";
+    message.content = voicetext
+
+    pinode.send( "commands", message);
+  }
+
+}
+
+
+function voiceListener() {
+
+  console.log("Listening...");
+  var command = "./voice.sh 2> /dev/null";
+
+  var voice = spawn('sh', ['-c', command]);
+
+
+  voice.stdout.on('data', function (data) {
+    // Encodes to utf8, removes quotes, whitespace
+    handleVoice(data.toString('utf8').replace(/(\r\n|\n|\r|\")/gm,""));
+  });
+
+  voice.stderr.on('data', function (data) {
+    console.log('stderr: ' + data);
+  });
+
+  voice.on('close', function (code) {
+  //  console.log('child process exited with code ' + code);
+
+    voiceListener();
+
+  });
 
 
 }
@@ -79,6 +113,8 @@ pinode.on("master", function(obj) {
   console.log("Connected to master.");
   masterNode = obj.hostName;
 
+  // Start voice listener
+  voiceListener();
 
 
 
