@@ -127,6 +127,8 @@ pinode.on("master", function(obj) {
   console.log("Connected to master.");
   masterNode = obj.hostName;
 
+  say.speak('voice_rab_diphone', "I am at your service");
+
   // Start voice listener
   voiceListener();
 
