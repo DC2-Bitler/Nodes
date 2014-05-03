@@ -1,5 +1,6 @@
 var Discovery = require('../node_modules/node-discovery').Discovery;
 var spawn = require('child_process').spawn;
+var say = require('../node_modules/say/lib/say')
 
 var message = {
   type: "request", // Request or Response
@@ -39,6 +40,7 @@ function handleCommands(data) {
       if( data.request == "tts") {
 
         console.log("TTS:" + data.content );
+        say.speak('rab_diphone', data.content);
 
 
       }
