@@ -27,6 +27,20 @@ pinode.advertise({
 pinode.join("commands", handleCommands);
 
 
+function sendResponse(result, tts) {
+  
+  message.type = "response";
+  message.dst = "master";
+  message.src = piname;
+  message.request = result;
+  message.content = tts;
+
+
+  console.log(message);
+  pinode.send("commands", message);
+
+}
+
 function handleCommands(data) {
   
   if( data.dst == piname && data.type == "request") {
@@ -35,6 +49,8 @@ function handleCommands(data) {
 
     if( data.request == "open" ) {
       console.log("Opening door.");
+
+      sendResponse("success", "Door opened.");
     }
     else if ( data.request == "close" ) {
       console.log("Closing door.");

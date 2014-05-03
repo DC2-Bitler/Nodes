@@ -14,7 +14,7 @@ var pinode = new Discovery({
 });
 
 var piname = "commpi";
-var picommands = [ "voicecommand" ];
+var picommands = [ "voicecommand", "tts" ];
 var masterNode = "NULL";
 
 
@@ -32,8 +32,20 @@ pinode.join("commands", handleCommands);
 
 function handleCommands(data) {
   
-  if( data.dst == piname && data.request == "command") {
+  if( data.dst == piname ) {
 
+    if( data.type == "request") {
+
+      if( data.request == "tts") {
+
+        console.log("TTS:" + data.content );
+
+
+      }
+
+
+
+    }
 
 
   }

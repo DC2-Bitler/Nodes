@@ -18,33 +18,64 @@ master.join("commands", handleCommands);
 
 function handleCommands(data) {
   
+  console.log(data);
+
+  if( data.dst == "master") {
+ 
   // A node is requesting a command
-  if( data.dst == "master" && data.type == "request" ) {
+  if( data.type == "request" ) {
 
     // Handle master commands here
 
     // Find node with this command
-    for (var i in master.nodes) {
+    if( data.request == "voiceparse") {
+      for (var i in master.nodes) {
       
-      for( var j in master.nodes[i].info.commands) {
+        for( var j in master.nodes[i].info.commands) {
 
-        if( master.nodes[i].info.commands[j] == data.content ) {
-          
-          message.dst = master.nodes[i].info.name;
-          message.src = "master";
-          message.request = master.nodes[i].info.commands[j];
-          message.content = "";
-          console.log(message);
+          if( master.nodes[i].info.commands[j] == data.content ) {
 
-          master.send('commands', message );
+            message.dst = master.nodes[i].info.name;
+            message.src = "master";
+            message.request = master.nodes[i].info.commands[j];
+            message.content = "";
+            console.log(message);
 
+            master.send('commands', message );
+
+
+          }
 
         }
-
       }
-
-
     }
+  }
+
+
+  // Send to voice nodes
+  if( data.type == "response" ) {
+
+    for (var i in master.nodes) {
+      
+        for( var j in master.nodes[i].info.commands) {
+
+          if( master.nodes[i].info.commands[j] == "tts" ) {
+
+            message.dst = master.nodes[i].info.name;
+            message.src = "master";
+            message.request = "tts";
+            message.content = data.content;
+            console.log(message);
+
+            master.send('commands', message );
+
+
+          }
+
+        }
+      }
+  }
+
 
   }
 
@@ -71,7 +102,6 @@ master.on("added", function(obj) {
   for (var id in master.nodes)
     console.log(master.nodes[id]);
 
-  master.send('commands','update');
 });
 
 master.on("removed", function(obj) {
