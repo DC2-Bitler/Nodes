@@ -1,4 +1,75 @@
+/**
+ * master.js
+ * cam morris
+ * this script will be run by the master node.
+ *
+ */
+
 var Discovery = require('../node_modules/node-discovery').Discovery;
+
+
+/*****************************************************************************/
+// NRS 5/5/14
+// this block adapted from http://webandphp.com/IntegratingNode.jswithPHP
+// make an http server that can accept commands, and report node JSON
+var http      = require('http'),
+    urlParser = require('url');
+
+http.createServer(function (req, res) {
+
+  // these args are objects created by the server:
+  // req is http://nodejs.org/api/http.html#http_http_incomingmessage
+  // res is http://nodejs.org/api/http.html#http_class_http_serverresponse
+
+  /* these vars will be used later to handle different requests */
+  var urlObj = urlParser.parse(req.url, true);
+
+
+  // only allow GET requests for simplicity's sake
+  if( req.method !== 'GET' ) // http methods: 'GET', 'POST, or 'DELETE' etc
+  {
+      res.writeHead(300, {'Content-Type': 'text/plain'});
+      res.end("unsupported request type");
+  }
+  else 
+  {
+      /* request for the master's known nodes: reply with json text */
+      if ( urlObj.pathname === "/nodes" )
+      {  
+	  res.writeHead(200, {'Content-Type': 'text/json'});
+	  res.end( JSON.stringify(master.nodes) );
+      }
+      /* if we see a command, run the command and report success/fail */
+      else if ( urlObj.pathname === "/command" )
+      {
+	  /******** @TODO ********/
+
+	  // parse the query text for the comand
+	  // urlObj.query contains an object of query name-value pairs
+
+	  // run the command or report illegal command
+
+	  // reply with status of command (if not illegal)
+
+	  /***********************/
+
+	  res.writeHead(200, {'Content-Type': 'text/plain'});
+	  res.end("command feature @todo");
+      }
+      else
+      {
+      	  res.writeHead(404, {'Content-Type': 'text/plain'});
+	  res.end("requested resource "+ urlObj.pathname +" not found.");
+      }
+  }
+
+  console.log("the master node's http server is serving a request...");
+
+    }).listen(1337, '127.0.0.1'); // end of createServer() call
+
+console.log('Server running at http://127.0.0.1:1337/');
+
+/*****************************************************************************/
 
 var message = {
   type: "request", // Request or Response
