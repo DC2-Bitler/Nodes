@@ -12,128 +12,8 @@
     <script type="text/javascript" src="js/jquery/jquery-ui.js"></script>
     <!-- -------------------- -->
 
-    <!-- speech recognition javascript -->
-    <!--script type="text/javascript" src="js/speech.js"></script-->
-
-    <!-- todo stylesheet -->
-    <!--link type="text/style" src=""-->
-
-    <!-- todo stylesheet -->
-    <style>
-      html, div {
-      display:  block;
-      }
-
-      div, p {
-        margin:  0px;
-        padding: 0px;
-      }
-
-      body {
-
-      background-color: #ABC;
-      color: black;
-
-      width: 100%;
-
-      margin: 15px 0px;
-
-      padding:  0px;
-
-      }
-      
-      .red {
-      background-color: red;
-      }
-
-      #wrapper {
-
-      border:        black thin solid;
-      border-radius: 5px;
-
-      background-color: #EFF;
-
-      margin-left:    auto;
-      margin-right:   auto;
-
-      /* width is controlled by jquery! */
-
-     }
-
-      #logo {      
-        left:     0px;
-        position: relative;
-      }
-
-
-      #navbar *, #footer * { 
-        display:    inline-block;
-        max-height: 50px;
-      }
-
-      #navbar {
-
-        /*position: absolute;*/
-        top:   0px;
-        left:  0px;
-        width: inherit;
-      
-        background-color: #BEF;
-
-        border-bottom: black thin solid;
-
-      }
-
-
-      #footer {
-
-        position: absolute;
-        bottom:  13px;
-
-        width:   inherit;
-
-        height:   22px;
-
-        background-color: #BEF;
-
-        border-bottom: black thin solid;
-
-      }
-
-      
-      /* sets width to 100% */
-      .pwidth
-      {
-
-      }
-
-
-      #navbuttons
-      {
-        float:        right;
-        margin-top:   10px;
-        margin-right: 10px;
-
-      }
-
-      /* actually style the navbutton */
-      #navbuttons a
-      {
-      
-        
-      
-      }
-
-      /* navbutton hover style */
-      #navbuttons a:hover
-      {
-      background-color: #EFF;
-      color: #4EA;
-      }
-
-
-    </style>
-    <!-- todo script -->
+    <!-- stylesheet -->
+    <link rel="stylesheet" type="text/css" href="style/main.css">
 
 
     <!-- very cool script for voice commands -->
@@ -183,7 +63,9 @@
       
 
     if (annyang) {
-      // Let's define our first command. First the text we expect, and then the function it should call
+
+      // Let's define our first command. 
+      // First the text we expect, and then the function it should call
       var commands = 
       {
 
@@ -197,16 +79,25 @@
       
          },
 
+      // DOORS
 
+         // UNLOCK
         '(please) unlock *lockname': actionUnlock,
-      
-        '(please) lock *lockname': actionLock,
-      
 
+         // LOCK
+        '(please) lock *lockname'  : actionLock,
+
+      
+      // LIGHTS
+
+        // OFF
         '(please) turn off *lightname': actionOff,
 
-        '(please) turn on *lightname': actionOn,
+        // ON
+        '(please) turn on *lightname' : actionOn,
 
+      
+      // NEVERMIND
         'nevermind': toReadyState
 
       };
@@ -215,13 +106,22 @@
       annyang.addCommands(commands);
  
      
-      // Start listening. You can call this here, or attach this call to an event, button, etc.
+      // Start listening. 
+      // (You can call this here, or attach this call to an event, button, etc.)
       annyang.start();
 
-    }
+    } // end of if(annyang){
+
+      else {
+
+        console.warn("no annyang, no speech");
+        alert("speech could not load properly, and is disabled");
+
+      }
 
     </script>
 
+    <!-- jquery ui stuff: code to size the page properly -->
     <script type="text/javascript" src="js/page.js"></script>
 
   </head>
@@ -239,7 +139,7 @@
 	<div id="main">
 
 	  <div id="speechStuff">
-	    <div    id="speechstatus">:)</div>
+	    <div    id="speechstatus"></div>
 	    <input  id="speechResult" />
 	    <button id="speechButton" onclick="speechAction()">Say a command</button>
 	    <button id="submitCommandButton">submit command (not implemented)</button>

@@ -1,0 +1,120 @@
+/******************************************************************************
+ * Nicholas St.Pierre
+ *
+ * stylesheet for bitlr
+ *
+ * 5.7.14
+ *
+ * sorry about the formatting
+ *
+ */
+
+
+    html, div {
+      display:  block;
+    }
+
+     div, p {
+        margin:  0px;
+        padding: 0px;
+     }
+
+    body {
+
+      background-color: #ABC;
+      color: black;
+
+      width: 100%;
+
+      margin: 15px 0px;
+
+      padding:  0px;
+
+    }
+      
+    .red {
+      background-color: red;
+    }
+
+    #wrapper {
+
+      border:        black thin solid;
+      border-radius: 5px;
+
+      background-color: #EFF;
+
+      margin-left:    auto;
+      margin-right:   auto;
+
+      /* width is controlled by jquery! */
+
+   }
+
+    #logo {      
+        left:     0px;
+        position: relative;
+    }
+
+
+    #navbar *, #footer * { 
+        display:    inline-block;
+        max-height: 50px;
+    }
+
+    #navbar {
+
+        /*position: absolute;*/
+        top:   0px;
+        left:  0px;
+        width: inherit;
+      
+        background-color: #BEF;
+
+        border-bottom: black thin solid;
+
+    }
+
+
+    #footer {
+
+        position: absolute;
+        bottom:  13px;
+
+        width:   inherit;
+
+        height:   22px;
+
+        background-color: #BEF;
+
+        border-bottom: black thin solid;
+
+    }
+
+      
+    /* sets width to 100% */
+    .pwidth
+    {
+
+    }
+
+
+    #navbuttons
+    {
+        float:        right;
+        margin-top:   10px;
+        margin-right: 10px;
+    }
+
+    /* actually style the navbutton */
+    #navbuttons a
+    {
+        
+      
+    }
+
+    /* navbutton hover style */
+    #navbuttons a:hover
+    {
+      background-color: #EFF;
+      color: #4EA;
+    }
