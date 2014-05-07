@@ -168,14 +168,16 @@
 	     foreach( $nodes as $node )
 	     {
 	       
-	       $nInfo = $node.info;
+	       $nInfo = $node->info;
+	       $name  = $nInfo->name;
+
 
 	       echo "<div class='nodeinfo'>",
 		    "<p>$name<p>";
 	  
 	       echo "<div>Commands";
 
-	       foreach( $nInfo.commands as $command )
+	       foreach( $nInfo->commands as $command )
 	       { 
 	         echo "<button onclick=doCommand('$command')>$command</button>";
 	       }
