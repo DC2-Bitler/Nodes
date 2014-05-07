@@ -1,56 +1,51 @@
 <?php
-
-/**
- * nick stpierre
+/******************************************************************************
+ * nick st.pierre
  * 5.7.14
- * script to ask the master node for its node status
  *
+ * script to ask the master node for its node status,
+ * or issue commands.
+ *
+ * 
  */
 
-	require('lib/unirest.php');
 
-	$response = Unirest::get("http://localhost:1337/nodes",            // url
-				  array( "Accept" => "application/json" ), // header
-				  array( /*"foo" => "bar"*/)               // body
+// we need unirest to make http requests to our master node
+require_once('lib/unirest.php');
+
+// location of our server
+$masterHttpUrl = "http://localhost:1337";
+
+// returns an object describing all the nodes the master knows about.
+// returns false on failure
+function getNodesInfo()
+{
+	global $masterHttpUrl;
+
+	// make a get request to our server
+	$response = Unirest::get( "$masterHttpUrl/nodes",                  // url
+				  array( "Accept" => "application/json" )  // header
+				  //array( /*"foo" => "bar"*/)               // body
 				);
 
-	echo "<html>http status code is: ";
-        echo $response->code; // http status code;
+	// check status code
+        //echo $response->code; // http status code;
 
-	echo "<br>\n";
+	$nodes = json_decode($response->raw_body);
 
+	return $nodes;
 
-	echo "here is the body text: ";
-	echo $response->raw_body;
-	
+}
 
+// sends a command to the master. returns false on failure, or true otherwise.
+function sendCommandToMasterNode($command)
+{
+	global $masterHttpUrl;
 
+	// make a get request to our server
+	$response = Unirest::get( "$masterHttpUrl/command",                // url
+				  array( "Accept" => "application/json" ), // header
+				  "$command"                               // body
+				);
 
-?>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+}
