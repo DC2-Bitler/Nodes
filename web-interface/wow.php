@@ -126,7 +126,8 @@
 
   </head>
   <body>
-    <div id="wrapper"> <!-- wraps the whole page-->
+    <div id="wrapper"> <!-- wraps the whole page -->
+
 	<div id="navbar">
 	  <img id="logo" src="assets/bitlr-logo.png" alt="Bitlr" /> 
 	  <div id="navbuttons">
@@ -139,13 +140,52 @@
 	<div id="main">
 
 	  <div id="speechStuff">
-	    <div    id="speechstatus"></div>
-	    <input  id="speechResult" />
-	    <button id="speechButton" onclick="speechAction()">Say a command</button>
+
+	    <div>Status: <span id="speechstatus"></span></div>
+	    <!--input  id="speechResult" />
+	    <button id="speechButton" onclick="speechAction()">Say a command</button-->
+
 	    <button id="submitCommandButton">submit command (not implemented)</button>
 	    <div    id="commandResult"></div>
 	  </div>
 	  <div id="ok great"></div>
+	</div>
+
+	<div id="nodeinfo">
+	<?php
+
+	   require('request.php');
+
+	   $nodes = getNodesInfo();
+
+	   if( $nodes === FALSE )
+	   {
+	     echo "<p>node status couldn't be retreived</p>";
+	   }
+	   else 
+	   {
+
+	     foreach( $nodes as $node )
+	     {
+	       
+	       $nInfo = $node.info;
+
+	       echo "<div class='nodeinfo'>",
+		    "<p>$name<p>";
+	  
+	       echo "<div>Commands";
+
+	       foreach( $nInfo.commands as $command )
+	       { 
+	         echo "<button onclick=doCommand('$command')>$command</button>";
+	       }
+
+	       echo "</div></div>" ;
+	       
+	     }
+
+	   }
+	?>
 	</div>
 
 	<div id="footer"></div>

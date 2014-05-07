@@ -16,10 +16,14 @@ var piname = "FrontDoor";
 var picommands = [ "open", "close" ];
 var masterNode = "NULL";
 
+// NRS 5.7.14 adding this in, soon, to help ui auto-generate options
+//var piType = "door";
+
 pinode.demote(true);
 
 pinode.advertise({
   name: piname,
+  //nodeType: piType,
   commands: picommands
 
 });
@@ -28,7 +32,7 @@ pinode.join("commands", handleCommands);
 
 
 function sendResponse(result, tts) {
-  
+
   message.type = "response";
   message.dst = "master";
   message.src = piname;
