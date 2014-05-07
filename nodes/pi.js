@@ -1,5 +1,13 @@
 var Discovery = require('../node_modules/node-discovery').Discovery;
 
+var message = {
+  type: "request", // Request or Response
+  dst: "node1", // Name of node to receive message
+  src: "node2", // Name of node origin
+  request: "command", // Type of command
+  content: "content" // Content of request
+}
+
 var pinode = new Discovery({
   weight: 1
 });
@@ -19,14 +27,32 @@ pinode.advertise({
 pinode.join("commands", handleCommands);
 
 
+function sendResponse(result, tts) {
+  
+  message.type = "response";
+  message.dst = "master";
+  message.src = piname;
+  message.request = result;
+  message.content = tts;
+
+
+  console.log(message);
+  pinode.send("commands", message);
+
+}
+
 function handleCommands(data) {
   
-  if( data.name == piname) {
+  if( data.dst == piname && data.type == "request") {
 
-    if( data.command == "open" ) {
+
+
+    if( data.request == "open" ) {
       console.log("Opening door.");
+
+      sendResponse("success", "Door opened.");
     }
-    else if ( data.command == "close" ) {
+    else if ( data.request == "close" ) {
       console.log("Closing door.");
     }
     else {
