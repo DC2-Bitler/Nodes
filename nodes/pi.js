@@ -1,7 +1,12 @@
 /**
  * pi.js
- * Cameron Morris
  *
+ * Authors:
+ * Cameron Morris
+ * Nick St.Pierre
+ * Dave Jelley
+ * Daniel Saari
+ * 
  * This file contains the general pi node.
  * 
  * This example shows the usage for a basic door node which can either open or 

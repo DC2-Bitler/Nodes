@@ -1,7 +1,11 @@
 /**
  * master.js
+ *
+ * Authors:
  * Cameron Morris
- * Nick St. Pierre
+ * Nick St.Pierre
+ * Dave Jelley
+ * Daniel Saari
  * 
  * This file contains the master node.
  * The master node processes all commands from the web interface and voice nodes

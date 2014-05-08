@@ -1,7 +1,12 @@
 /**
  * commpi.js
- * Cameron Morris
  *
+ * Authors:
+ * Cameron Morris
+ * Nick St.Pierre
+ * Dave Jelley
+ * Daniel Saari
+ * 
  * This file contains the functionality for voice control
  * 
  * This node will continuously listen to the microphone parsing voice to text
@@ -149,3 +154,26 @@ pinode.on("master", function(obj) {
 
 
 });
+
+// Handles TTS commands
+function handleCommands(data) {
+
+  if( data.dst == piname ) {
+
+    if( data.type == "request") {
+
+      if( data.request == "tts") {
+
+        console.log("TTS:" + data.content );
+        say.speak('rab_diphone', data.content);
+
+
+      }
+
+
+
+    }
+
+
+  }
+}
