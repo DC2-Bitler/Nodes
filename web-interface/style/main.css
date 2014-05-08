@@ -50,11 +50,32 @@
 
    }
 
+   #main {
+
+    margin-left: 10px;
+    margin-top:  20px;
+   }
+
     #logo {      
         left:     0px;
         position: relative;
     }
 
+    .nodeinfo
+    {
+	padding: 5px 10px;
+	margin:  2px;
+	border:	 black solid thin;
+	border-radius: 5px;
+	display: inline-block;
+
+    }
+
+    .devicename
+    {
+	font-weight: bold;
+
+    }
 
     #navbar *, #footer * { 
         display:    inline-block;

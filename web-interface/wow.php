@@ -18,6 +18,40 @@
 
     <!-- very cool script for voice commands -->
     <script src="//cdnjs.cloudflare.com/ajax/libs/annyang/1.1.0/annyang.min.js"></script>
+
+
+    <!-- doCommand code -->
+    <script>
+      function doCommand( nodeid, command )
+      {
+        $.ajax({
+
+          url: "http://localhost:1337/command",
+
+          data: { id: nodeid, command: command  },
+
+          dataType: 'jsonp',
+
+          error: function( failedXHR, strTextStatus, strErrorThrown ){
+
+            console.error("AJAX call failed: " + strTextStatus + "... " + strErrorThrown);
+            
+          },
+      
+
+
+          success: function(data, ignore){
+
+             console.log("success: " + data);
+      
+          } 
+        });
+
+      }
+
+    </script>
+
+    <!-- voice recognition js -->
     <script>
 
       var state;
@@ -136,62 +170,59 @@
 	  </div>
 	</div>
 
-	<h1>Welcome to BitLr</h1>
 	<div id="main">
 
 	  <div id="speechStuff">
-
-	    <div>Status: <span id="speechstatus"></span></div>
+	    <!--div>Status: <span id="speechstatus"></span></div-->
 	    <!--input  id="speechResult" />
 	    <button id="speechButton" onclick="speechAction()">Say a command</button-->
-
-	    <button id="submitCommandButton">submit command (not implemented)</button>
-	    <div    id="commandResult"></div>
+	    <!--button id="submitCommandButton">submit command (not implemented)</button-->
+	    <!--div    id="commandResult"></div-->
 	  </div>
-	  <div id="ok great"></div>
-	</div>
 
-	<div id="nodeinfo">
-	<?php
+	  <!--div id="ok great"></div-->
 
-	   require('request.php');
+	  <div id="nodeinfo">
+	    <h2>Devices</h2>
+	    <?php
 
-	   $nodes = getNodesInfo();
+	     require('request.php');
 
-	   if( $nodes === FALSE )
-	   {
-	     echo "<p>node status couldn't be retreived</p>";
-	   }
-	   else 
-	   {
+	     $nodes = getNodesInfo();
 
-	     foreach( $nodes as $node )
+	     if( $nodes === FALSE )
 	     {
+	       echo "<p>node status couldn't be retreived</p>";
+	     }
+	     else 
+	     {
+
+	       foreach( $nodes as $node )
+	       {
 	       
-	       $nInfo = $node->info;
-	       $name  = $nInfo->name;
+	         $nInfo = $node->info;
+	         $name  = $nInfo->name;
 
 
-	       echo "<div class='nodeinfo'>",
-		    "<p>$name<p>";
+	         echo "<div class='nodeinfo'>",
+		      "<p class='devicename'>$name<p>";
 	  
-	       echo "<div>Commands";
+	         echo "<div>Commands";
 
-	       foreach( $nInfo->commands as $command )
-	       { 
-	         echo "<button onclick=doCommand('$command')>$command</button>";
+	         foreach( $nInfo->commands as $command )
+	         { 
+	           echo "<button onclick=doCommand('$name','$command')>$command</button>";
+	         }
+
+	         echo "</div></div>" ;
+	       
 	       }
 
-	       echo "</div></div>" ;
-	       
 	     }
-
-	   }
-	?>
-	</div>
-
-	<div id="footer"></div>
-
-    </div>
+	  ?>
+	  </div>
+	</div> <!-- end main -->
+	<div id="footer">Bitlr all rights reserved I guess</div>
+    </div> <!-- end wrapper -->
   </body>
 </html>
