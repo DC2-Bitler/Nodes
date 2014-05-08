@@ -1,3 +1,12 @@
+/**
+ * master.js
+ * Cameron Morris
+ *
+ * This file contains the general pi node.
+ * 
+ * This example shows the usage for a basic door node which can either open or 
+ * close a door.
+ */
 var Discovery = require('../node_modules/node-discovery').Discovery;
 
 var message = {
@@ -30,7 +39,7 @@ pinode.advertise({
 
 pinode.join("commands", handleCommands);
 
-
+// Sends a response back to the master of the command
 function sendResponse(result, tts) {
 
   message.type = "response";
@@ -45,6 +54,7 @@ function sendResponse(result, tts) {
 
 }
 
+// Process commands received from other nodes
 function handleCommands(data) {
   
   if( data.dst == piname && data.type == "request") {
@@ -58,6 +68,8 @@ function handleCommands(data) {
     }
     else if ( data.request == "close" ) {
       console.log("Closing door.");
+
+      sendResponse("success", "Door closed.");
     }
     else {
       console.log("Bad command");
