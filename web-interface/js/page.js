@@ -35,20 +35,14 @@ $(function(){
     /*window.console.log('resizing ' + parentDivSelector + ' to width '
       + newWidth + ' and height ' + newHeight );*/
 
-    /* size our logo container (so the page doesn't get too large.) */
-    //$( '#logo_container' ).width( newWidth );
-
 
     /* size our outermost div */
     $( parentDivSelector ).height(newHeight);
     $( parentDivSelector ).width( newWidth );
 
-    /* position red/green call button */
-    /*$('#callButton').position({
-	    my: "center",
-		at: "center",
-		of: "#buttonsPanel"
-       });*/
+    /* size the inner div so scrolling works properly */
+    $("#nodeinfo").height( (newHeight - 105) );
+
 
   } /* end of function sizePage(){ */
 

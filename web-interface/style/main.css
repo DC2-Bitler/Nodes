@@ -53,12 +53,22 @@
    #main {
 
     margin-left: 10px;
-    margin-top:  20px;
+    margin-top:  15px;
    }
 
     #logo {      
         left:     0px;
         position: relative;
+    }
+
+
+    #nodeinfo
+    {
+
+
+	overflow: scroll;
+
+
     }
 
     .nodeinfo
@@ -68,7 +78,7 @@
 	border:	 black solid thin;
 	border-radius: 5px;
 	display: inline-block;
-
+	
     }
 
     .devicename

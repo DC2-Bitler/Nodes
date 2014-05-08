@@ -7,6 +7,8 @@
     <!-- NRS: Directive to control the page width on mobile devices-->
     <meta name="viewport" content="width=device-width, maximum-scale=1" />
 
+    <title>BITlr control page</title>
+
     <!-- JQuery -->
     <script type="text/javascript" src="js/jquery/jquery.js"></script>
     <script type="text/javascript" src="js/jquery/jquery-ui.js"></script>
@@ -22,6 +24,10 @@
 
     <!-- doCommand code -->
     <script>
+      
+      /**
+       * send a command to the master node via an ajax call
+       */
       function doCommand( nodeid, command )
       {
         $.ajax({
@@ -39,9 +45,9 @@
           },
       
 
-
           success: function(data, ignore){
 
+             alert( "Command '" + command + "' to '" + nodeid + "' successful");
              console.log("success: " + data);
       
           } 
