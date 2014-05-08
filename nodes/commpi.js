@@ -1,7 +1,23 @@
+/**
+ * commpi.js
+ *
+ * Authors:
+ * Cameron Morris
+ * Nick St.Pierre
+ * Dave Jelley
+ * Daniel Saari
+ * 
+ * This file contains the functionality for voice control
+ * 
+ * This node will continuously listen to the microphone parsing voice to text
+ * using google's voice api and then sends the result to the master node
+ */
+
 var Discovery = require('../node_modules/node-discovery').Discovery;
 var spawn = require('child_process').spawn;
 var say = require('../node_modules/say/lib/say')
 
+// Message format
 var message = {
   type: "request", // Request or Response
   dst: "node1", // Name of node to receive message
@@ -10,14 +26,16 @@ var message = {
   content: "content" // Content of request
 }
 
+// Makes sure can not be master
 var pinode = new Discovery({
   weight: 1
 });
 
+// Name of node
 var piname = "commpi";
+// Commands this node can do
 var picommands = [ "voicecommand", "tts" ];
 var masterNode = "NULL";
-
 
 pinode.demote(true);
 
@@ -25,14 +43,13 @@ pinode.advertise({
   name: piname,
   commands: picommands
 
-
 });
 
 pinode.join("commands", handleCommands);
 
-
+// Handles TTS commands
 function handleCommands(data) {
-  
+
   if( data.dst == piname ) {
 
     if( data.type == "request") {
@@ -53,11 +70,11 @@ function handleCommands(data) {
   }
 }
 
-
+// Takes resulting voice to text ands sends to master
 function handleVoice(voicetext) {
 
   console.log(voicetext);
-  
+
   if( voicetext.length != 0 ) {
     // Send to master for parser
     message.type = "request";
@@ -71,7 +88,7 @@ function handleVoice(voicetext) {
 
 }
 
-
+// Handles recording the voice, parsing and sending to master node
 function voiceListener() {
 
   console.log("Listening...");
@@ -123,6 +140,7 @@ pinode.on("removed", function(obj) {
     console.log(pinode.nodes[id].hostName);
 });
 
+// Starts the voice recognition once connected to master
 pinode.on("master", function(obj) {
   console.log("Connected to master.");
   masterNode = obj.hostName;
@@ -136,3 +154,26 @@ pinode.on("master", function(obj) {
 
 
 });
+
+// Handles TTS commands
+function handleCommands(data) {
+
+  if( data.dst == piname ) {
+
+    if( data.type == "request") {
+
+      if( data.request == "tts") {
+
+        console.log("TTS:" + data.content );
+        say.speak('rab_diphone', data.content);
+
+
+      }
+
+
+
+    }
+
+
+  }
+}

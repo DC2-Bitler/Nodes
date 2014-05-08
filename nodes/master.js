@@ -1,8 +1,15 @@
 /**
  * master.js
- * cam morris
- * this script will be run by the master node.
  *
+ * Authors:
+ * Cameron Morris
+ * Nick St.Pierre
+ * Dave Jelley
+ * Daniel Saari
+ * 
+ * This file contains the master node.
+ * The master node processes all commands from the web interface and voice nodes
+ * and sends the requests to the correct node that has the functionality.
  */
 
 var Discovery = require('../node_modules/node-discovery').Discovery;
@@ -71,6 +78,7 @@ console.log('Server running at http://127.0.0.1:1337/');
 
 /*****************************************************************************/
 
+// Message format
 var message = {
   type: "request", // Request or Response
   dst: "node1", // Name of node to receive message
@@ -79,14 +87,15 @@ var message = {
   content: "content" // Content of request
 }
 
-
+// Ensures master status
 var master = new Discovery({
   weight: 10
 });
 
+// Add self to commands channel
 master.join("commands", handleCommands);
 
-
+// Process any commands send to the master
 function handleCommands(data) {
   
   console.log(data);
