@@ -12,6 +12,7 @@ var Discovery = require('../node_modules/node-discovery').Discovery;
 var spawn = require('child_process').spawn;
 var say = require('../node_modules/say/lib/say')
 
+// Message format
 var message = {
   type: "request", // Request or Response
   dst: "node1", // Name of node to receive message
@@ -20,11 +21,14 @@ var message = {
   content: "content" // Content of request
 }
 
+// Makes sure can not be master
 var pinode = new Discovery({
   weight: 1
 });
 
+// Name of node
 var piname = "commpi";
+// Commands this node can do
 var picommands = [ "voicecommand", "tts" ];
 var masterNode = "NULL";
 

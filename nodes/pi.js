@@ -1,5 +1,5 @@
 /**
- * master.js
+ * pi.js
  * Cameron Morris
  *
  * This file contains the general pi node.
@@ -9,6 +9,7 @@
  */
 var Discovery = require('../node_modules/node-discovery').Discovery;
 
+// Message format
 var message = {
   type: "request", // Request or Response
   dst: "node1", // Name of node to receive message
@@ -17,11 +18,14 @@ var message = {
   content: "content" // Content of request
 }
 
+// Makes sure it can not be master
 var pinode = new Discovery({
   weight: 1
 });
 
+// Name of this node
 var piname = "FrontDoor";
+// Commands the node has
 var picommands = [ "open", "close" ];
 var masterNode = "NULL";
 
