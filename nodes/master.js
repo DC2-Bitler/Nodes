@@ -22,6 +22,27 @@ var Discovery = require('../node_modules/node-discovery').Discovery;
 var http      = require('http'),
     urlParser = require('url');
 
+
+// function to send a message to a node
+function sendMessage( destName,
+		      request,
+		      content )
+{
+
+    message.dst = destName;
+    message.src = "master";
+    message.request = request;
+    message.content = content;
+
+    console.log("Master sending message:");
+    console.log(message);
+
+    return master.send('commands', message );
+
+
+} // end sendMessage() definition
+
+
 http.createServer(function (req, res) {
 
   // these args are objects created by the server:
@@ -49,19 +70,39 @@ http.createServer(function (req, res) {
       /* if we see a command, run the command and report success/fail */
       else if ( urlObj.pathname === "/command" )
       {
-	  /******** @TODO ********/
 
-	  // parse the query text for the comand
+	  // parse the query text for the command
 	  // urlObj.query contains an object of query name-value pairs
 
 	  // run the command or report illegal command
 
-	  // reply with status of command (if not illegal)
+	  // reply with JSON, describing the status of command (if not illegal)
+
+       
+	  var success = true,                   // control var for failure case
+	      nodeid  = urlObj.query.id,        // pi ID to send command
+	      command = urlObj.query.command;   // command text
+
+
+	  console.log("nodeid = " + nodeid + " and command = " +command);
+
+	  // send the command
+	  success = sendMessage( nodeid,
+		                 command,
+		                 "" ) ;
 
 	  /***********************/
+	  res.writeHead(200, {'Content-Type': 'text/jsonp'});
 
-	  res.writeHead(200, {'Content-Type': 'text/plain'});
-	  res.end("command feature @todo");
+	  if ( !success )
+	  { // fail case
+	      res.end("command_fail({'status': 'failed'})");
+	  }
+	  else 
+	  { // success case
+	      res.end("command_success({'status': 'success'})");
+	  }
+
       }
       else
       {
@@ -74,7 +115,7 @@ http.createServer(function (req, res) {
 
     }).listen(1337, '127.0.0.1'); // end of createServer() call
 
-console.log('Server running at http://127.0.0.1:1337/');
+console.log('master\'s HTTP server running at http://127.0.0.1:1337/');
 
 /*****************************************************************************/
 

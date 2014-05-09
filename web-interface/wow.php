@@ -24,6 +24,16 @@
 
     <!-- doCommand code -->
     <script>
+
+
+      function command_fail(jsonpObject){
+        console.log("wow cool, failure callback executed.");
+      }
+
+      function command_success(jsonpObject){
+        console.log("awesome, success hi");
+      }
+
       
       /**
        * send a command to the master node via an ajax call
@@ -38,19 +48,23 @@
 
           dataType: 'jsonp',
 
+          jsonp: false,
+      
+          jsonpCallback: function(anObject){console.log("jsonp default callback running...")},
+      
           error: function( failedXHR, strTextStatus, strErrorThrown ){
 
-            console.error("AJAX call failed: " + strTextStatus + "... " + strErrorThrown);
+            console.warn("AJAX call encountered an error: " + strTextStatus + "... " + strErrorThrown);
             
           },
       
 
-          success: function(data, ignore){
+          /*success: function(data, ignore){
 
              alert( "Command '" + command + "' to '" + nodeid + "' successful");
              console.log("success: " + data);
       
-          } 
+          } */
         });
 
       }
