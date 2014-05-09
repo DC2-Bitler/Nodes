@@ -13,9 +13,10 @@
 // we need unirest to make http requests to our master node
 require_once('lib/unirest.php');
 
-// location of our server
+// location of our master node's server
 $masterHttpUrl = "http://localhost:1337";
 
+// makes a request to the master node
 // returns an object describing all the nodes the master knows about.
 // returns false on failure
 function getNodesInfo()
@@ -47,5 +48,12 @@ function sendCommandToMasterNode($command)
 				  array( "Accept" => "application/json" ), // header
 				  "$command"                               // body
 				);
-
+	if( $response->code == 200 )
+	{
+		return true;
+	}
+	else
+	{
+	 return false;
+	}
 }

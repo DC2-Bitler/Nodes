@@ -1,4 +1,14 @@
 <!doctype html>
+<!--
+    Nick St.Pierre
+    May 8 2014
+
+    This is the UI for our DC2 project Bitler.
+
+    It asks for the node status from the master node, and then creates a UI
+    based on the capabilities of the nodes.
+
+-->
 <html>
   <head>
 
@@ -25,13 +35,13 @@
     <!-- doCommand code -->
     <script>
 
-
+      <!-- callbacks for our AJAX request -->
       function command_fail(jsonpObject){
-        console.log("wow cool, failure callback executed.");
+        console.log("ajax error");
       }
 
       function command_success(jsonpObject){
-        console.log("awesome, success hi");
+        console.log("ajax success");
       }
 
       
@@ -56,23 +66,16 @@
 
             console.warn("AJAX call encountered an error: " + strTextStatus + "... " + strErrorThrown);
             
-          },
-      
+          }
 
-          /*success: function(data, ignore){
-
-             alert( "Command '" + command + "' to '" + nodeid + "' successful");
-             console.log("success: " + data);
-      
-          } */
         });
 
       }
 
     </script>
 
-    <!-- voice recognition js -->
-    <script>
+    <!-- voice recognition js, not used in final version -->
+    <!--script>
 
       var state;
 
@@ -115,7 +118,8 @@
         console.log("actionOff: "+lightname);
       }
       
-
+      /* voice recognition legacy code */
+/********
     if (annyang) {
 
       // Let's define our first command. 
@@ -172,8 +176,8 @@
         alert("speech could not load properly, and is disabled");
 
       }
-
-    </script>
+********/
+    </script -->
 
     <!-- jquery ui stuff: code to size the page properly -->
     <script type="text/javascript" src="js/page.js"></script>
@@ -208,6 +212,7 @@
 
 	     require('request.php');
 
+	     // get node's info from master
 	     $nodes = getNodesInfo();
 
 	     if( $nodes === FALSE )
